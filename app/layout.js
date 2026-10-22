@@ -1,14 +1,16 @@
 import React from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
 
-import Navbar from "./components/Navbar";
 import { CartProvider } from "../context/CartContext";
+import TopBar from "../components/layout/TopBar";
+import Header from "../components/layout/Header";
+import CategoryNav from "../components/layout/CategoryNav";
+import Footer from "../components/layout/Footer";
 
 // Estilos globales (Tailwind + tokens de Vix)
 import "./globals.css";
 
 // Bootstrap se mantiene temporalmente mientras se migran las páginas antiguas.
-// Se eliminará en la fase de limpieza visual.
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -35,21 +37,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="es"
-      className={`${inter.variable} ${spaceGrotesk.variable}`}
-    >
-      <body>
+    <html lang="es" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className="flex min-h-screen flex-col bg-paper text-ink">
         <CartProvider>
-          <header>
-            <Navbar />
-          </header>
+          <TopBar />
+          <Header />
+          <CategoryNav />
 
-          <main className="mainContent">{children}</main>
+          <main className="flex-1">{children}</main>
 
-          <footer>
-            <p>© {new Date().getFullYear()} Vix — Todos los derechos reservados</p>
-          </footer>
+          <Footer />
         </CartProvider>
       </body>
     </html>
