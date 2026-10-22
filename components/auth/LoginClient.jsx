@@ -19,15 +19,21 @@ export default function LoginClient() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [notice, setNotice] = useState("");
+  const [noticeTone, setNoticeTone] = useState("success");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Mensaje cuando venimos de crear una cuenta
+  // Mensajes que llegan por la URL
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
+
     if (params.get("registered") === "1") {
       setNotice("Cuenta creada con éxito. Ya puedes iniciar sesión.");
+      setNoticeTone("success");
+    } else if (params.get("expired") === "1") {
+      setNotice("Tu sesión expiró. Inicia sesión de nuevo.");
+      setNoticeTone("warning");
     }
   }, []);
 
@@ -101,8 +107,18 @@ export default function LoginClient() {
       }
     >
       {notice && (
-        <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-success/30 bg-success/5 p-3 text-sm text-ink">
-          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+        <div
+          className={
+            noticeTone === "warning"
+              ? "mb-5 flex items-start gap-2.5 rounded-xl border border-deal/40 bg-deal/10 p-3 text-sm text-ink"
+              : "mb-5 flex items-start gap-2.5 rounded-xl border border-success/30 bg-success/5 p-3 text-sm text-ink"
+          }
+        >
+          {noticeTone === "warning" ? (
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-deal" />
+          ) : (
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+          )}
           {notice}
         </div>
       )}
