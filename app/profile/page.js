@@ -70,9 +70,11 @@ export default function ProfilePage() {
       message.success('Perfil actualizado correctamente');
       
       // Actualizar la información del usuario en localStorage
-      const user = JSON.parse(localStorage.getItem('user'));
+      const user = JSON.parse(localStorage.getItem('user')) || {};
       localStorage.setItem('user', JSON.stringify({
         ...user,
+        name: values.name,
+        email: values.email,
         profileImage: imageUrl
       }));
       

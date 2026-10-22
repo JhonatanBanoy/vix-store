@@ -3,51 +3,32 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
 }
 
 body {
-  background-color: #7c4e4e63;
-  color: #333;
-  /* Se eliminó flex para permitir mejor control del contenido */
-  text-align: center;
-  padding: 0;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #faf7f2;
+  color: #2a211c;
+  text-align: left;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 main {
-  margin-top: 80px; /* Ajusta para que no se sobreponga con el header */
+  margin-top: 68px;
   padding: 20px;
   width: 100%;
 }
 
-/* Estilos para el Navbar */
-header {
-  width: 100%;
-  background: #b764648e;
-  padding: 15px 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Georgia", "Times New Roman", serif;
 }
 
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px 15px;
-}
-
-nav a:hover {
-  background: #444;
-  border-radius: 5px;
+a {
+  color: inherit;
 }
 
 /* Footer */
@@ -55,17 +36,19 @@ footer {
   margin-top: 50px;
   font-size: 0.9rem;
   text-align: center;
-  padding: 10px;
+  padding: 24px 16px;
   width: 100%;
-  background: #b764648e;
-  color: white;
+  background: #201a16;
+  color: #cfc5ba;
+  letter-spacing: 0.6px;
 }
 
-/* Asegurar que el contenido siempre llene la pantalla */
-html, body {
+html,
+body {
   height: 100%;
 }
 
-#root, .container {
-  min-height: calc(100vh - 80px); /* Ajusta para que el footer no suba */
+#root,
+.container {
+  min-height: calc(100vh - 68px);
 }

@@ -42,9 +42,17 @@ export default function LoginPage() {
       justifyContent: 'center', 
       alignItems: 'center', 
       minHeight: '100vh',
-      background: '#f0f2f5'
+      background: 'linear-gradient(135deg, #201a16 0%, #4a3726 55%, #7a5c3a 100%)'
     }}>
-      <Card title="Iniciar Sesión" style={{ width: 400 }}>
+      <Card 
+        title={
+          <div style={{ textAlign: 'center', fontFamily: 'Georgia, serif', letterSpacing: '1px' }}>
+            ◆ Iniciar Sesión
+          </div>
+        }
+        style={{ width: 400, borderRadius: 16, boxShadow: '0 16px 40px rgba(0,0,0,0.35)', overflow: 'hidden' }}
+        styles={{ header: { borderBottom: '1px solid #eadfc9' } }}
+      >
         <Form
           name="login"
           onFinish={onFinish}

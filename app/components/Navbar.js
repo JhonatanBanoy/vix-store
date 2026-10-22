@@ -1,20 +1,19 @@
-'use client';  // Marca el archivo como solo para cliente
+'use client';
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styles from "../styles/Navbar.module.css";
-import { useCart } from '../../../my_project/context/CartContext'; // Importar el contexto
-import Dashboard from './Dashboard';
+import { useCart } from '../../../my_project/context/CartContext';
 import { Dropdown, Menu, Button, Avatar } from 'antd';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Navbar() {
-  const { cartItems } = useCart(); // Obtener los items del carrito
+  const { cartItems } = useCart();
   const router = useRouter();
+  const pathname = usePathname();
   const [userName, setUserName] = useState('');
   const [userImage, setUserImage] = useState('');
 
-  // Leer el usuario de localStorage solo en el cliente
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -25,7 +24,7 @@ export default function Navbar() {
         setUserName('');
       }
     }
-  }, []);
+  }, [pathname]);
 
   const handleMenuClick = ({ key }) => {
     if (key === 'logout') {
@@ -36,45 +35,58 @@ export default function Navbar() {
       router.push('/');
     } else if (key === 'profile') {
       router.push('/profile');
+    } else if (key === 'dashboard') {
+      router.push('/dashboard');
     }
   };
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="profile">Setting</Menu.Item>
+      <Menu.Item key="profile">Perfil</Menu.Item>
+      <Menu.Item key="dashboard">Dashboard</Menu.Item>
       <Menu.Item key="logout">Cerrar sesión</Menu.Item>
     </Menu>
   );
 
+  const cartTotal = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <nav className={styles.navbar}>
-      <ul>
-        <li><Link href='/'>Home</Link></li>
-        <li><Link href='/products'>productos</Link></li>
-        <li><Link href='/contact'>contacto</Link></li>
-        {/* styles for cards */}
-        <li className={styles.cartContainer}>
-          <Link href='/cart' className={styles.cartlink}>
-            <i className="bi bi-cart-fill" /> {/* Icono del carrito */}
-            {cartItems.length > 0 && (
-             <span className={styles.cartBadge}>
-            {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-           </span>
-          )}
+      <div className={styles.navInner}>
+        <Link href="/" className={styles.brand}>
+          <span className={styles.brandGem}>◆</span> Luxe Joyas
+        </Link>
+
+        <ul className={styles.navLinks}>
+          <li><Link href="/" className={pathname === '/' ? styles.active : ''}>Inicio</Link></li>
+          <li><Link href="/products" className={pathname.startsWith('/products') ? styles.active : ''}>Productos</Link></li>
+          <li><Link href="/contact" className={pathname.startsWith('/contact') ? styles.active : ''}>Contacto</Link></li>
+        </ul>
+
+        <div className={styles.navActions}>
+          <Link href="/cart" className={`${styles.cartButton} ${styles.cartlink}`}>
+            <i className="bi bi-bag" />
+            {cartTotal > 0 && (
+              <span className={styles.cartBadge}>{cartTotal}</span>
+            )}
           </Link>
-        </li>
-        {/* Usuario y menú desplegable */}
-        {userName && (
-          <li>
-            <Dropdown overlay={menu} placement="bottomRight">
-              <Button type="text" style={{ marginLeft: 8, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Avatar src={userImage} />
-                {userName}
+
+          {userName ? (
+            <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+              <Button className={styles.userButton} type="text">
+                <Avatar src={userImage} size="small" />
+                <span className={styles.userName}>{userName}</span>
+                <i className="bi bi-chevron-down" />
               </Button>
             </Dropdown>
-          </li>
-        )}
-      </ul>
+          ) : (
+            <Link href="/login" className={styles.loginButton}>
+              <i className="bi bi-person" />
+              <span>Iniciar sesión</span>
+            </Link>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }

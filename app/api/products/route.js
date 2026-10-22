@@ -2,10 +2,13 @@ import { NextResponse } from 'next/server';
 import { MongoClient, ObjectId } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const client = uri ? new MongoClient(uri) : null;
 
 export async function GET() {
   try {
+    if (!client) {
+      return NextResponse.json({ error: 'MONGODB_URI no configurada' }, { status: 500 });
+    }
     await client.connect();
     const database = client.db('ecommerce');
     const products = await database.collection('products').find({}).toArray();
@@ -19,6 +22,9 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    if (!client) {
+      return NextResponse.json({ error: 'MONGODB_URI no configurada' }, { status: 500 });
+    }
     const product = await request.json();
     await client.connect();
     const database = client.db('ecommerce');
@@ -33,6 +39,9 @@ export async function POST(request) {
 
 export async function PUT(request) {
   try {
+    if (!client) {
+      return NextResponse.json({ error: 'MONGODB_URI no configurada' }, { status: 500 });
+    }
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const product = await request.json();
@@ -53,6 +62,9 @@ export async function PUT(request) {
 
 export async function DELETE(request) {
   try {
+    if (!client) {
+      return NextResponse.json({ error: 'MONGODB_URI no configurada' }, { status: 500 });
+    }
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     

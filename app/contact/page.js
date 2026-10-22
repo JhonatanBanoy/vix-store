@@ -1,10 +1,14 @@
 "use client"; // Requerido para usar hooks como useState
 import { useState } from 'react';
+import dynamic from "next/dynamic";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 
 import styles from '../styles/contact.module.css';
-import MapComponent from '../components/MapComponent';
+
+const MapComponent = dynamic(() => import('../components/MapComponent'), {
+  ssr: false,
+});
 
 export default function Contact() {
   const [formData, setForData] = useState({

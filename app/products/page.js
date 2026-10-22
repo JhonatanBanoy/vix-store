@@ -1,33 +1,34 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "../../context/CartContext";
-import { Button, Card, Container, Row, Col, Spinner } from "react-bootstrap";
+import styles from "../styles/products.module.css";
 
 export default function ProductosPage() {
-  const [products, setProducts] = useState([]); // Todos los productos
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 5;
+  const productsPerPage = 6;
 
   const { addToCart } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
-    // Fetch productos del dashboard
     fetch("http://localhost:5000/api/products")
       .then((res) => {
-        if (!res.ok) throw Error("Error al obtener los productos del dashboard");
+        if (!res.ok) throw Error("Error al obtener los productos");
         return res.json();
       })
       .then((dashboard) => {
-        // Normaliza los productos del dashboard para que tengan las mismas claves
         const dashboardNormalized = dashboard.map((p) => ({
           ...p,
           id: p._id || p.id,
           title: p.title || p.name,
           image: p.image || "https://via.placeholder.com/200",
           price: p.price || 0,
+          description: p.description || "",
         }));
         setProducts(dashboardNormalized);
       })
@@ -35,7 +36,6 @@ export default function ProductosPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Calcular índices de paginación
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -50,73 +50,63 @@ export default function ProductosPage() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+  const handleBuy = (product) => {
+    addToCart(product);
+    router.push("/cart");
+  };
+
   return (
-    <Container className="mt-4">
-      <h1>Lista de productos</h1>
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <h1>Nuestra Colección</h1>
+        <p>Joyería fina seleccionada para cada ocasión especial.</p>
+      </header>
 
       {loading ? (
-        <Spinner animation="border" />
+        <div className={styles.loading}>
+          <div className={styles.spinner} />
+          <span>Cargando productos...</span>
+        </div>
       ) : error ? (
-        <p className="text-danger">{error}</p>
+        <p className={styles.error}>{error}</p>
       ) : (
         <>
-          <Row>
+          <div className={styles.grid}>
             {currentProducts.map((product) => (
-              <Col key={product.id} md={4} className="mb-4">
-                <Card>
-                  <Card.Img
-                    variant="top"
-                    src={product.image}
-                    style={{ height: "200px", objectFit: "contain" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>{product.title}</Card.Title>
-                    <Card.Text>
-                      <strong>${product.price}</strong>
-                    </Card.Text>
-                    <Button variant="primary" onClick={() => addToCart(product)}>
-                      🛒 Agregar al carrito
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
+              <article key={product.id} className={styles.card}>
+                <div className={styles.imageWrapper}>
+                  <img src={product.image} alt={product.title} />
+                </div>
+                <div className={styles.cardBody}>
+                  <h3>{product.title}</h3>
+                  <p className={styles.description}>{product.description}</p>
+                  <p className={styles.price}>${product.price.toLocaleString("es-CO")}</p>
+                  <button
+                    className={styles.buyButton}
+                    onClick={() => handleBuy(product)}
+                  >
+                    Comprar
+                  </button>
+                </div>
+              </article>
             ))}
-          </Row>
-
-          {/* Botones de navegación */}
-          <div className="d-flex justify-content-between align-items-center mt-4">
-            <Button onClick={prevPage} disabled={currentPage === 1}>
-              ⬅ Anterior
-            </Button>
-            <span>Página {currentPage} de {totalPages}</span>
-            <Button onClick={nextPage} disabled={currentPage === totalPages}>
-              Siguiente ➡
-            </Button>
           </div>
+
+          {totalPages > 1 && (
+            <div className={styles.pagination}>
+              <button onClick={prevPage} disabled={currentPage === 1}>
+                ← Anterior
+              </button>
+              <span>
+                Página {currentPage} de {totalPages}
+              </span>
+              <button onClick={nextPage} disabled={currentPage === totalPages}>
+                Siguiente →
+              </button>
+            </div>
+          )}
         </>
       )}
-
-      {/* Contador decorativo */}
-      <Contador />
-    </Container>
-  );
-}
-
-// 👇 Componente del contador decorativo
-function Contador() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (count === 5) document.body.style.backgroundColor = "red";
-    else if (count === 10) document.body.style.backgroundColor = "blue";
-    else if (count === 15) document.body.style.backgroundColor = "green";
-    else document.body.style.backgroundColor = "white";
-  }, [count]);
-
-  return (
-    <div className="mt-5">
-      <h2>Contador: {count}</h2>
-      <Button onClick={() => setCount(count + 1)}>Incrementar</Button>
     </div>
   );
 }
