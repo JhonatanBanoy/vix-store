@@ -40,12 +40,14 @@ export const CartProvider = ({ children }) => {
     });
   };
   
-  // Función para incrementar cantidad
+  // Función para incrementar cantidad (sin superar el stock)
   const increaseQuantity = (id) => {
     setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
+      prevItems.map((item) => {
+        if (item.id !== id) return item;
+        const max = Number(item.stock) > 0 ? Number(item.stock) : Infinity;
+        return { ...item, quantity: Math.min(item.quantity + 1, max) };
+      })
     );
   };
 
@@ -67,8 +69,22 @@ export const CartProvider = ({ children }) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
+  // Vaciar el carrito por completo
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        increaseQuantity,
+        decreaseQuantity,
+        removeFromCart,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
