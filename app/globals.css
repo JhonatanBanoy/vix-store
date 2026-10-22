@@ -1,54 +1,68 @@
-/* Estilos globales */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import "tailwindcss";
+
+/* Rutas de escaneo explícitas (evita fallos de detección automática) */
+@source "../app/**/*.{js,jsx}";
+@source "../components/**/*.{js,jsx}";
+@source "../context/**/*.{js,jsx}";
+@source "../lib/**/*.{js,jsx}";
+
+
+/* ============================================================
+   VIX — Design tokens
+   ============================================================ */
+@theme {
+  /* Tipografía */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+
+  /* Neutros */
+  --color-paper: #ffffff;
+  --color-bone: #f6f4f0;
+  --color-ink: #0b0b0f;
+  --color-muted: #6b7280;
+  --color-line: #e7e5e4;
+
+  /* Marca */
+  --color-brand: #5b3df5;
+  --color-brand-soft: #edebff;
+  --color-brand-light: #9c8cff;
+
+  /* Funcionales */
+  --color-deal: #ffb020;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+
+  /* Radios */
+  --radius-card: 1rem;
 }
 
-body {
-  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: #faf7f2;
-  color: #2a211c;
-  text-align: left;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
 
-main {
-  margin-top: 68px;
-  padding: 20px;
-  width: 100%;
-}
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: "Georgia", "Times New Roman", serif;
-}
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
 
-a {
-  color: inherit;
-}
-
-/* Footer */
-footer {
-  margin-top: 50px;
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 24px 16px;
-  width: 100%;
-  background: #201a16;
-  color: #cfc5ba;
-  letter-spacing: 0.6px;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-#root,
-.container {
-  min-height: calc(100vh - 68px);
+  ::selection {
+    background-color: var(--color-brand);
+    color: #ffffff;
+  }
 }
