@@ -10,10 +10,6 @@ import Footer from "../components/layout/Footer";
 // Estilos globales (Tailwind + tokens de Vix)
 import "./globals.css";
 
-// Bootstrap se mantiene temporalmente mientras se migran las páginas antiguas.
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
