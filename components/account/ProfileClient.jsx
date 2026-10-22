@@ -19,6 +19,7 @@ import Breadcrumbs from "../catalog/Breadcrumbs";
 import Badge from "../ui/Badge";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import Toast from "../ui/Toast";
 import { api } from "../../lib/api";
 import { cloudinaryConfig } from "../../app/config/cloudinary";
 
@@ -50,6 +51,7 @@ export default function ProfileClient() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [toast, setToast] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -200,6 +202,10 @@ export default function ProfileClient() {
       }));
       setImageUrl(data.profileImage || "");
       setSuccess("Perfil actualizado correctamente");
+      setToast({
+        type: "success",
+        message: "Perfil actualizado correctamente",
+      });
     } catch (err) {
       if (err?.response?.status === 401) {
         clearSession();
@@ -207,9 +213,10 @@ export default function ProfileClient() {
         return;
       }
 
-      setError(
-        err?.response?.data?.message || "No se pudo actualizar el perfil"
-      );
+      const message =
+        err?.response?.data?.message || "No se pudo actualizar el perfil";
+      setError(message);
+      setToast({ type: "error", message });
     } finally {
       setSaving(false);
     }
@@ -229,6 +236,13 @@ export default function ProfileClient() {
 
   return (
     <Container className="py-10">
+      <Toast
+        open={Boolean(toast)}
+        type={toast?.type}
+        message={toast?.message}
+        onClose={() => setToast(null)}
+      />
+
       <Breadcrumbs
         items={[{ label: "Inicio", href: "/" }, { label: "Mi perfil" }]}
       />
