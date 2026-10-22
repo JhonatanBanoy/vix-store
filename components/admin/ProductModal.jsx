@@ -80,6 +80,8 @@ export default function ProductModal({ open, product, onClose, onSave, saving })
       next.stock = "El stock no puede ser negativo";
 
     if (!form.image.trim()) next.image = "La imagen es obligatoria";
+    else if (!/^(\/|https?:\/\/)/i.test(form.image.trim()))
+      next.image = "Usa una ruta (/img/foto.jpg) o una URL que empiece por http";
     if (!form.description.trim())
       next.description = "La descripción es obligatoria";
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 import { cn } from "../../lib/utils";
 import Badge from "../ui/Badge";
+import ProductImage from "../ui/ProductImage";
 
 export default function ProductGallery({ images = [], name, discount = 0 }) {
   const [active, setActive] = useState(0);
@@ -22,10 +22,9 @@ export default function ProductGallery({ images = [], name, discount = 0 }) {
   return (
     <div className="space-y-3">
       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-bone">
-        <Image
+        <ProductImage
           src={current}
           alt={name}
-          fill
           sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"
           priority
@@ -53,10 +52,9 @@ export default function ProductGallery({ images = [], name, discount = 0 }) {
                   : "border-line hover:border-muted"
               )}
             >
-              <Image
+              <ProductImage
                 src={src}
                 alt={`${name} — imagen ${i + 1}`}
-                fill
                 sizes="80px"
                 className="object-cover"
               />

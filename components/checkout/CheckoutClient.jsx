@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { MessageCircle, CheckCircle2, ShoppingBag } from "lucide-react";
 
 import Container from "../layout/Container";
 import Breadcrumbs from "../catalog/Breadcrumbs";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import ProductImage from "../ui/ProductImage";
 import { useCart } from "../../context/CartContext";
 import { formatPrice } from "../../lib/utils";
 import { whatsappLink } from "../../lib/contact";
@@ -317,15 +317,12 @@ export default function CheckoutClient() {
               {cartItems.map((item) => (
                 <li key={item.id} className="flex gap-3 py-3">
                   <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-md border border-line bg-bone">
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.name || "Producto"}
-                        fill
-                        sizes="48px"
-                        className="object-cover"
-                      />
-                    ) : null}
+                    <ProductImage
+                      src={item.image}
+                      alt={item.name || "Producto"}
+                      sizes="48px"
+                      className="object-cover"
+                    />
                   </div>
 
                   <div className="min-w-0 flex-1">

@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, AlertCircle } from "lucide-react";
 
 import { useCart } from "../../context/CartContext";
 import { cn, formatPrice } from "../../lib/utils";
+import ProductImage from "../ui/ProductImage";
 
 export default function CartItem({ item }) {
   const { increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
@@ -22,19 +22,12 @@ export default function CartItem({ item }) {
         href={`/products/${item.id}`}
         className="relative h-24 w-20 shrink-0 overflow-hidden rounded-lg border border-line bg-bone"
       >
-        {item.image ? (
-          <Image
-            src={item.image}
-            alt={item.name || "Producto"}
-            fill
-            sizes="80px"
-            className="object-cover"
-          />
-        ) : (
-          <span className="flex h-full items-center justify-center px-1 text-center text-[10px] text-muted">
-            Sin imagen
-          </span>
-        )}
+        <ProductImage
+          src={item.image}
+          alt={item.name || "Producto"}
+          sizes="80px"
+          className="object-cover"
+        />
       </Link>
 
       {/* Datos */}
