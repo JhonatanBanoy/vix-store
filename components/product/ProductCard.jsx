@@ -1,0 +1,84 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { ShoppingBag } from "lucide-react";
+
+import { useCart } from "../../context/CartContext";
+import { cn, formatPrice, discountPercent } from "../../lib/utils";
+import Badge from "../ui/Badge";
+
+export default function ProductCard({ product, className }) {
+  const { addToCart } = useCart();
+
+  const outOfStock = product.stock <= 0;
+  const discount = discountPercent(product.compareAtPrice, product.price);
+  const href = `/products/${product.id}`;
+
+  return (
+    <div
+      className={cn(
+        "group relative flex flex-col overflow-hidden rounded-card border border-line bg-paper transition-shadow duration-200 hover:shadow-lg",
+        className
+      )}
+    >
+      <Link
+        href={href}
+        className="relative block aspect-[4/5] overflow-hidden bg-bone"
+      >
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <span className="flex h-full items-center justify-center text-sm text-muted">
+            Sin imagen
+          </span>
+        )}
+
+        <div className="absolute left-3 top-3 flex flex-col items-start gap-2">
+          {discount > 0 && <Badge variant="sale">-{discount}%</Badge>}
+          {outOfStock && <Badge variant="danger">Agotado</Badge>}
+        </div>
+
+        {!outOfStock && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              addToCart(product);
+            }}
+            className="absolute inset-x-3 bottom-3 flex h-10 items-center justify-center gap-2 rounded-xl bg-ink text-sm font-medium text-white transition-all duration-200 sm:translate-y-2 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            Añadir
+          </button>
+        )}
+      </Link>
+
+      <div className="flex flex-1 flex-col gap-1.5 p-4">
+        <Link
+          href={href}
+          className="line-clamp-2 text-sm font-medium leading-snug transition-colors hover:text-brand"
+        >
+          {product.name}
+        </Link>
+
+        <div className="mt-auto flex flex-wrap items-baseline gap-2 pt-2">
+          <span className="text-lg font-bold">{formatPrice(product.price)}</span>
+          {product.compareAtPrice > product.price && (
+            <span className="text-sm text-muted line-through">
+              {formatPrice(product.compareAtPrice)}
+            </span>
+          )}
+        </div>
+
+        <p className="text-xs font-medium text-success">Envío gratis</p>
+      </div>
+    </div>
+  );
+}
