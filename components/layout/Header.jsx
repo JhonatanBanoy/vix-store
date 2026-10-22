@@ -31,14 +31,25 @@ export default function Header() {
 
   const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
 
-  // Lee el usuario guardado
+  // Lee el usuario guardado y se mantiene sincronizado
   useEffect(() => {
-    try {
-      setUser(JSON.parse(localStorage.getItem("user")));
-      setRole(localStorage.getItem("role"));
-    } catch {
-      setUser(null);
-    }
+    const sync = () => {
+      try {
+        setUser(JSON.parse(localStorage.getItem("user")));
+        setRole(localStorage.getItem("role"));
+      } catch {
+        setUser(null);
+      }
+    };
+
+    sync();
+    window.addEventListener("storage", sync);
+    window.addEventListener("vix:auth", sync);
+
+    return () => {
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("vix:auth", sync);
+    };
   }, []);
 
   // Cierra el menú de cuenta al hacer clic fuera
@@ -65,6 +76,7 @@ export default function Header() {
     setUser(null);
     setRole(null);
     setAccountOpen(false);
+    window.dispatchEvent(new Event("vix:auth"));
     router.push("/");
   };
 
