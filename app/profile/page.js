@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Form, Input, Button, Card, message, Spin, Upload, Avatar } from 'antd';
 import { UploadOutlined, UserOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { api } from '../../lib/api';
 import { cloudinaryConfig } from '../config/cloudinary';
 
 export default function ProfilePage() {
@@ -22,7 +23,7 @@ export default function ProfilePage() {
         return;
       }
       try {
-        const response = await axios.get('http://localhost:5000/api/auth/profile', {
+        const response = await api.get('/auth/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         form.setFieldsValue({
@@ -61,7 +62,7 @@ export default function ProfilePage() {
     setSaving(true);
     const token = localStorage.getItem('token');
     try {
-      await axios.put('http://localhost:5000/api/auth/profile', {
+      await api.put('/auth/profile', {
         ...values,
         profileImage: imageUrl
       }, {

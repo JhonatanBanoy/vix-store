@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Form, Input, Button, Card, message } from 'antd';
-import axios from 'axios';
+import { api } from '../../lib/api';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function LoginPage() {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', values);
+      const response = await api.post('/auth/login', values);
       const { token, user } = response.data;
       const role = user?.role;
       localStorage.setItem('token', token);

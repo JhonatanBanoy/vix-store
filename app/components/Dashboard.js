@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { Card, Table, Button, Modal, Form, Input, InputNumber, message, Image } from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { API_URL as BASE_URL } from '../../lib/api';
 import { useRouter } from 'next/navigation';
 
 
-const API_URL = 'http://localhost:5000/api/products'; // Cambia esto si tu backend está en otra URL
+const API_URL = `${BASE_URL}/api/products`;
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);

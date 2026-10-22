@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Form, Input, Button, Card, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { api } from '../../lib/api';
 import { cloudinaryConfig } from '../config/cloudinary';
 
 export default function RegisterPage() {
@@ -42,7 +43,7 @@ export default function RegisterPage() {
         role: 'user',
         profileImage: imageUrl || `https://api.dicebear.com/7.x/avatars/svg?seed=${email}`
       };
-      const response = await axios.post('http://localhost:5000/api/auth/register', payload);
+      const response = await api.post('/auth/register', payload);
       message.success('Registro exitoso');
       router.push('/login');
     } catch (error) {

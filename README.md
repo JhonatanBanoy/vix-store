@@ -1,49 +1,67 @@
-HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vix — Tienda online
 
-## Getting Started
+Tienda de dropshipping construida con **Next.js 15 + React 19**.
 
-First, run the development server:
+## Requisitos
+
+- Node.js 18+
+- Docker Desktop (para el backend y MongoDB)
+
+## Arranque del proyecto
+
+### 1. Backend + base de datos (Docker)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd "C:\Users\Jhonatan\Documents\trabajos de VSC\ecommerce-api\ecommerce-api"
+docker compose up -d
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Esto levanta:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- `api-1` → backend en `http://localhost:5000`
+- `mongo` → MongoDB en `localhost:27017`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Frontend
 
-## Learn More
+```bash
+cd "C:\Users\Jhonatan\Documents\trabajos de VSC\React\my_project"
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Abrir: **http://localhost:3000**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Variables de entorno
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+El archivo `.env.local` contiene:
 
-## Deploy on Vercel
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Todas las peticiones al backend deben usar `API_URL` desde `lib/api.js`.
+No escribir URLs fijas en los componentes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Estructura
 
-# Tareas 
+```
+app/            → rutas y páginas (App Router)
+components/     → componentes reutilizables
+context/        → estado global (carrito)
+lib/            → utilidades y cliente HTTP
+public/         → imágenes y assets estáticos
+```
 
+## Scripts
 
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` | Servidor de desarrollo en `:3000` |
+| `npm run build` | Compila para producción |
+| `npm run start` | Sirve la versión compilada |
+| `npm run lint` | Análisis de código |
 
-1. Documentacion de la API
-2. MongoDB
+## Notas
 
-
-
-
-6e1f94be4d0b8aef77eafb553b062c0ae6d6a068
+- El backend **no** vive en este proyecto: está en `ecommerce-api\ecommerce-api`.
+- No ejecutar `npm run dev` del backend en local mientras el contenedor Docker esté activo (choque en el puerto 5000).
+- No borrar el volumen `ecommerce-api_mongo_data`: contiene los datos.

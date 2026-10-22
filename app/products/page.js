@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../../context/CartContext";
+import { API_URL } from "../../lib/api";
 import styles from "../styles/products.module.css";
 
 export default function ProductosPage() {
@@ -16,7 +17,7 @@ export default function ProductosPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch(`${API_URL}/api/products`)
       .then((res) => {
         if (!res.ok) throw Error("Error al obtener los productos");
         return res.json();

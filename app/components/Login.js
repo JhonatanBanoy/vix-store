@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import axios from "axios"; // Import axios for making HTTP requests
+import { api } from "../../lib/api";
 import { useRouter } from 'next/navigation';
 
 const Login = ({setToken}) => {
@@ -12,7 +12,7 @@ const Login = ({setToken}) => {
         e.preventDefault(); // Prevent the default form submission behavior
 
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/login", {email, password});
+            const response = await api.post("/auth/login", {email, password});
             const token = response.data.token;
             setToken(token); // Guardar el token en el estado global
             localStorage.setItem("token", token); // Guardar el token en el localStorage
