@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Button, Modal, Form, Input, InputNumber, message, Image } from 'antd';
+import { Card, Table, Button, Modal, Form, Input, InputNumber, message, Image, Switch, Tag, Typography } from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { API_URL as BASE_URL } from '../../lib/api';
@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [togglingId, setTogglingId] = useState(null);
   const router = useRouter();
 
   const columns = [
@@ -46,6 +47,27 @@ const Dashboard = () => {
       title: 'Stock',
       dataIndex: 'stock',
       key: 'stock',
+      render: (stock) =>
+        stock > 0 ? stock : <Tag color="red">Sin stock</Tag>,
+    },
+    {
+      title: 'Disponible',
+      dataIndex: 'isActive',
+      key: 'isActive',
+      filters: [
+        { text: 'Visibles', value: true },
+        { text: 'Ocultos', value: false },
+      ],
+      onFilter: (value, record) => (record.isActive !== false) === value,
+      render: (isActive, record) => (
+        <Switch
+          checked={isActive !== false}
+          loading={togglingId === record._id}
+          onChange={(checked) => handleToggleActive(record, checked)}
+          checkedChildren="Sí"
+          unCheckedChildren="No"
+        />
+      ),
     },
     {
       title: 'Descripción',
@@ -115,6 +137,12 @@ const Dashboard = () => {
       form.resetFields();
       setEditingProduct(null);
       fetchProducts();
+
+      if (Number(values.stock) === 0) {
+        message.info(
+          'El producto quedó con stock 0. Puedes ocultarlo con el interruptor "Disponible".'
+        );
+      }
     } catch (error) {
       message.error('Error al guardar el producto');
     }
@@ -135,8 +163,43 @@ const Dashboard = () => {
 
   const handleEdit = (product) => {
     setEditingProduct(product);
-    form.setFieldsValue(product);
+    form.setFieldsValue({
+      ...product,
+      isActive: product.isActive !== false,
+    });
     setIsModalVisible(true);
+  };
+
+  const handleToggleActive = async (product, checked) => {
+    setTogglingId(product._id);
+
+    // Actualización optimista: se ve al instante
+    setProducts((prev) =>
+      prev.map((p) => (p._id === product._id ? { ...p, isActive: checked } : p))
+    );
+
+    try {
+      await axios.put(
+        `${API_URL}/${product._id}`,
+        { isActive: checked },
+        { headers: getAuthHeaders() }
+      );
+      message.success(
+        checked
+          ? `"${product.name}" ya es visible en la tienda`
+          : `"${product.name}" se ocultó de la tienda`
+      );
+    } catch (error) {
+      // Si falla, se revierte el cambio
+      setProducts((prev) =>
+        prev.map((p) =>
+          p._id === product._id ? { ...p, isActive: !checked } : p
+        )
+      );
+      message.error('No se pudo actualizar la disponibilidad');
+    } finally {
+      setTogglingId(null);
+    }
   };
 
   const handleCancel = () => {
@@ -160,10 +223,17 @@ const Dashboard = () => {
           </Button>
         }
       >
+        <Typography.Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+          {products.filter((p) => p.isActive !== false).length} visibles ·{' '}
+          {products.filter((p) => p.isActive === false).length} ocultos
+        </Typography.Text>
+
         <Table 
           columns={columns} 
           dataSource={products} 
           rowKey="_id"
+          rowClassName={(record) => (record.isActive === false ? 'opacity-40' : '')}
+          pagination={{ pageSize: 10, showSizeChanger: false }}
         />
       </Card>
 
@@ -177,6 +247,7 @@ const Dashboard = () => {
           form={form}
           onFinish={handleAddProduct}
           layout="vertical"
+          initialValues={{ isActive: true }}
         >
           <Form.Item
             name="name"
@@ -207,6 +278,14 @@ const Dashboard = () => {
             label="Descripción"
           >
             <Input.TextArea />
+          </Form.Item>
+
+          <Form.Item
+            name="isActive"
+            label="Visible en la tienda"
+            valuePropName="checked"
+          >
+            <Switch checkedChildren="Sí" unCheckedChildren="No" />
           </Form.Item>
 
           <Form.Item

@@ -42,6 +42,43 @@ export default async function ProductDetailPage({ params }) {
 
   if (!product) notFound();
 
+  // Producto desactivado desde el panel de administración
+  if (!product.isActive) {
+    return (
+      <Container className="py-16">
+        <div className="mx-auto max-w-lg text-center">
+          <Badge variant="muted" className="mx-auto">
+            No disponible
+          </Badge>
+
+          <h1 className="mt-4 text-3xl font-bold sm:text-4xl">
+            Este producto no está disponible
+          </h1>
+
+          <p className="mt-3 text-muted">
+            Puede que se haya agotado o que ya no esté en catálogo. Explora
+            otras opciones mientras tanto.
+          </p>
+
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              href="/products"
+              className="inline-flex h-12 items-center justify-center rounded-xl bg-brand px-7 text-base font-medium text-white transition-colors hover:bg-brand/90"
+            >
+              Ver productos
+            </Link>
+            <Link
+              href="/"
+              className="inline-flex h-12 items-center justify-center rounded-xl border border-line bg-paper px-7 text-base font-medium text-ink transition-colors hover:bg-bone"
+            >
+              Ir al inicio
+            </Link>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+
   const discount = discountPercent(product.compareAtPrice, product.price);
   const outOfStock = product.stock <= 0;
 
