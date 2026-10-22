@@ -3,9 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
 
-import { cn, formatPrice } from "../../lib/utils";
-
-export default function Filters({ buckets = [], onDone }) {
+export default function Filters({ onDone }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -18,21 +16,6 @@ export default function Filters({ buckets = [], onDone }) {
     router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     onDone?.();
   };
-
-  const isPriceActive = (b) =>
-    searchParams.get("min") === String(b.min) &&
-    searchParams.get("max") === String(b.max);
-
-  const togglePrice = (b) =>
-    apply((p) => {
-      if (isPriceActive(b)) {
-        p.delete("min");
-        p.delete("max");
-      } else {
-        p.set("min", String(b.min));
-        p.set("max", String(b.max));
-      }
-    });
 
   const toggleFlag = (key) =>
     apply((p) => {
@@ -53,32 +36,6 @@ export default function Filters({ buckets = [], onDone }) {
 
   return (
     <div className="space-y-7">
-      {/* Precio */}
-      <section>
-        <h3 className="text-sm font-semibold">Precio</h3>
-        <ul className="mt-3 space-y-2">
-          {buckets.map((b) => (
-            <li key={`${b.min}-${b.max}`}>
-              <button
-                type="button"
-                onClick={() => togglePrice(b)}
-                className={cn(
-                  "flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
-                  isPriceActive(b)
-                    ? "bg-brand-soft font-medium text-brand"
-                    : "text-muted hover:bg-bone hover:text-ink"
-                )}
-              >
-                <span>
-                  {formatPrice(b.min)} — {formatPrice(b.max)}
-                </span>
-                <span className="text-xs">{b.count}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       {/* Disponibilidad */}
       <section>
         <h3 className="text-sm font-semibold">Disponibilidad</h3>

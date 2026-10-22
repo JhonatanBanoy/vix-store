@@ -6,7 +6,6 @@ import Pagination from "../../components/catalog/Pagination";
 import ProductGrid from "../../components/product/ProductGrid";
 import EmptyState from "../../components/home/EmptyState";
 import { fetchProducts } from "../../lib/products";
-import { formatPrice } from "../../lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -16,34 +15,6 @@ export const metadata = {
 };
 
 const PAGE_SIZE = 12;
-
-function buildPriceBuckets(products) {
-  const prices = products
-    .map((p) => p.price)
-    .filter((n) => Number.isFinite(n) && n > 0);
-
-  if (!prices.length) return [];
-
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
-
-  if (min === max) {
-    return [{ min, max, count: products.length }];
-  }
-
-  const step = Math.ceil((max - min) / 3);
-
-  const ranges = [
-    { min, max: min + step },
-    { min: min + step + 1, max: min + 2 * step },
-    { min: min + 2 * step + 1, max },
-  ].filter((r) => r.min <= max);
-
-  return ranges.map((r) => ({
-    ...r,
-    count: products.filter((p) => p.price >= r.min && p.price <= r.max).length,
-  }));
-}
 
 export default async function ProductsPage({ searchParams }) {
   const sp = (await searchParams) || {};
@@ -58,10 +29,6 @@ export default async function ProductsPage({ searchParams }) {
   const page = Math.max(1, Number(sp.page) || 1);
 
   const all = (await fetchProducts()).filter((p) => p.isActive);
-  const buckets = buildPriceBuckets(all).map((b) => ({
-    ...b,
-    label: `${formatPrice(b.min)} — ${formatPrice(b.max)}`,
-  }));
 
   let items = all;
 
@@ -138,10 +105,10 @@ export default async function ProductsPage({ searchParams }) {
       </div>
 
       <div className="mt-6 lg:grid lg:grid-cols-[240px_1fr] lg:gap-8">
-        <FilterSidebar buckets={buckets} />
+        <FilterSidebar />
 
         <div>
-          <CatalogToolbar total={total} buckets={buckets} />
+          <CatalogToolbar total={total} />
 
           <div className="mt-5">
             {total > 0 ? (

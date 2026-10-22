@@ -22,21 +22,21 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Función para agregar productos al carrito
-  const addToCart = (product) => {
+  // Función para agregar productos al carrito (con cantidad opcional)
+  const addToCart = (product, quantity = 1) => {
+    const qty = Math.max(1, Math.floor(Number(quantity) || 1));
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
       if (existingItem) {
-        // Si ya existe, solo aumentamos la cantidad
+        // Si ya existe, aumentamos la cantidad
         return prevItems.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + qty }
             : item
         );
-      } else {
-        // Si no existe, lo agregamos con cantidad 1
-        return [...prevItems, { ...product, quantity: 1 }];
       }
+      // Si no existe, lo agregamos con la cantidad indicada
+      return [...prevItems, { ...product, quantity: qty }];
     });
   };
   

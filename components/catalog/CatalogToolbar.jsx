@@ -6,7 +6,7 @@ import { SlidersHorizontal, X } from "lucide-react";
 
 import Filters from "./Filters";
 
-export default function CatalogToolbar({ total = 0, buckets = [] }) {
+export default function CatalogToolbar({ total = 0 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -81,7 +81,7 @@ export default function CatalogToolbar({ total = 0, buckets = [] }) {
               </button>
             </div>
             <div className="mt-6">
-              <Filters buckets={buckets} onDone={() => setOpen(false)} />
+              <Filters onDone={() => setOpen(false)} />
             </div>
           </aside>
         </>
