@@ -22,7 +22,7 @@ export const metadata = {
 export default async function HomePage() {
   const products = await fetchProducts();
   const active = products.filter((product) => product.isActive);
-  const featured = active.slice(0, 8);
+  const featured = active.slice(0, 4);
 
   const featuredIds = new Set(featured.map((product) => product.id));
   const newArrivals = [...active]
@@ -57,7 +57,7 @@ export default async function HomePage() {
 
           <div className="mt-6">
             {featured.length ? (
-              <ProductGrid products={featured} />
+              <ProductGrid products={featured} className="sm:grid-cols-2 lg:grid-cols-4" />
             ) : (
               <EmptyState />
             )}
@@ -86,7 +86,7 @@ export default async function HomePage() {
             </div>
 
             <div className="mt-6">
-              <ProductGrid products={newArrivals} />
+              <ProductGrid products={newArrivals} className="sm:grid-cols-2 lg:grid-cols-4" />
             </div>
           </Container>
         </section>

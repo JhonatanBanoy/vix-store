@@ -24,7 +24,7 @@ export default function ProductCard({ product, className }) {
     >
       <Link
         href={href}
-        className="relative block aspect-[4/5] overflow-hidden bg-bone"
+        className="relative block aspect-square overflow-hidden bg-bone"
       >
         <ProductImage
           src={product.image}

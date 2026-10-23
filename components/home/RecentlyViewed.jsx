@@ -64,7 +64,7 @@ export default function RecentlyViewed({ products = [] }) {
         </div>
 
         <div className="mt-6">
-          <ProductGrid products={items} />
+          <ProductGrid products={items} className="sm:grid-cols-2 lg:grid-cols-4" />
         </div>
       </Container>
     </section>
