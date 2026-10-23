@@ -104,14 +104,13 @@
   }
 }
 
+.vix-marquee {
+  background: linear-gradient(90deg, #2b1699 0%, #5b3df5 50%, #2b1699 100%);
+}
+
 .vix-marquee-track {
   animation: vix-marquee 42s linear infinite;
   will-change: transform;
-}
-
-.vix-marquee:hover .vix-marquee-track,
-.vix-marquee:focus-visible .vix-marquee-track {
-  animation-play-state: paused;
 }
 
 .vix-marquee-mask {
@@ -134,26 +133,7 @@
 .vix-marquee-glow {
   background: radial-gradient(
     ellipse at center,
-    rgba(91, 61, 245, 0.24),
+    rgba(255, 255, 255, 0.16),
     transparent 65%
   );
-}
-
-.vix-marquee-static {
-  display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .vix-marquee-track {
-    display: none;
-  }
-
-  .vix-marquee-mask {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .vix-marquee-static {
-    display: flex;
-  }
 }
