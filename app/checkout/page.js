@@ -2,7 +2,8 @@ import CheckoutClient from "../../components/checkout/CheckoutClient";
 
 export const metadata = {
   title: "Finalizar compra",
-  description: "Completa tus datos y confirma tu pedido por WhatsApp.",
+  description:
+    "Compra como invitado, ingresa tu dirección y paga en línea o contra entrega.",
 };
 
 export default function CheckoutPage() {

@@ -5,7 +5,7 @@ import Container from "../layout/Container";
 
 const BENEFITS = [
   "Envíos a todo el país",
-  "Pago seguro y confirmación por WhatsApp",
+  "Pago seguro y seguimiento de tu pedido",
   "Devoluciones hasta 30 días",
 ];
 

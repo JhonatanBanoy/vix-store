@@ -137,7 +137,7 @@ export default function HeroCarousel({ products = [] }) {
       {/* Sello flotante */}
       <div className="absolute -left-3 top-10 z-10 rounded-xl border border-line bg-paper px-4 py-3 shadow-lg sm:-left-6">
         <p className="text-[11px] uppercase tracking-wide text-muted">Envío</p>
-        <p className="text-sm font-semibold text-success">Gratis</p>
+        <p className="text-sm font-semibold text-brand">Nacional</p>
       </div>
     </div>
   );
@@ -211,8 +211,8 @@ function PromoSlide() {
         <Truck className="h-6 w-6" />
       </span>
 
-      <p className="font-display text-2xl font-bold">Envío gratis</p>
-      <p className="text-sm text-white/70">En compras a todo el país</p>
+      <p className="font-display text-2xl font-bold">Envío seguro</p>
+      <p className="text-sm text-white/70">A todo el país, con seguimiento</p>
 
       <Link
         href="/products"

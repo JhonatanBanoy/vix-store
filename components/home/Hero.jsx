@@ -51,7 +51,7 @@ export default function Hero({ products = [] }) {
               <dt className="text-xs uppercase tracking-wide text-muted">
                 Envíos
               </dt>
-              <dd className="mt-1 font-display text-xl font-bold">Gratis</dd>
+              <dd className="mt-1 font-display text-xl font-bold">Nacional</dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-wide text-muted">

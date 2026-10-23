@@ -1,10 +1,10 @@
-import { Truck, MessageCircle, RotateCcw, Star } from "lucide-react";
+import { Truck, ShieldCheck, RotateCcw, Star } from "lucide-react";
 
 import Container from "../layout/Container";
 
 const items = [
   { icon: Truck, title: "Envío a todo el país", text: "Rápido y seguro" },
-  { icon: MessageCircle, title: "Compra directa", text: "Por WhatsApp" },
+  { icon: ShieldCheck, title: "Pago seguro", text: "En línea o contra entrega" },
   { icon: RotateCcw, title: "Devoluciones", text: "Hasta 30 días" },
   { icon: Star, title: "Calidad garantizada", text: "Productos verificados" },
 ];

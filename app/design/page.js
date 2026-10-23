@@ -205,7 +205,7 @@ export default function DesignPage() {
                 <span className="text-lg font-bold">$ 89.900</span>
                 <span className="text-sm text-muted line-through">$ 129.900</span>
               </div>
-              <p className="text-xs font-medium text-success">Envío gratis</p>
+              <p className="text-xs font-medium text-success">Envío a todo el país</p>
             </div>
           </Card>
 
@@ -230,7 +230,7 @@ export default function DesignPage() {
             </div>
             <div className="flex justify-between">
               <span className="text-muted">Envío</span>
-              <span className="text-success">Gratis</span>
+              <span className="text-muted">Según ciudad</span>
             </div>
           </CardBody>
           <CardFooter className="flex items-center justify-between">

@@ -81,7 +81,7 @@ export default function ProductCard({ product, className, compact = false }) {
           )}
         </div>
 
-        <p className="text-xs font-medium text-success">Envío gratis</p>
+        <p className="text-xs font-medium text-success">Envío a todo el país</p>
       </div>
     </div>
   );

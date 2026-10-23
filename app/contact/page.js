@@ -27,7 +27,7 @@ const FAQS = [
   },
   {
     q: "¿Qué medios de pago aceptan?",
-    a: "Recibimos transferencias, tarjetas y pagos contra entrega en las ciudades habilitadas.",
+    a: "Puedes pagar contra entrega. También estamos activando Wompi para pagar en línea con tarjetas, PSE y Nequi.",
   },
   {
     q: "¿Hacen envíos a todo el país?",

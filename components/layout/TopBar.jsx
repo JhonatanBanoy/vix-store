@@ -8,8 +8,8 @@ import Container from "./Container";
 import { cn } from "../../lib/utils";
 
 const MESSAGES = [
-  { icon: Truck, text: "Envío gratis a todo el país" },
-  { icon: MessageCircle, text: "Atención personal por WhatsApp" },
+  { icon: Truck, text: "Envío a todo el país" },
+  { icon: MessageCircle, text: "Asesoría y seguimiento por WhatsApp" },
   { icon: ShieldCheck, text: "Productos seleccionados con garantía" },
 ];
 

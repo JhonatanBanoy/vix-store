@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Package,
@@ -14,6 +15,7 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  ShoppingBag,
   Store,
 } from "lucide-react";
 
@@ -300,7 +302,13 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/dashboard/pedidos"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-line bg-paper px-4 text-sm font-medium text-ink transition-colors hover:bg-bone"
+          >
+            <ShoppingBag className="h-4 w-4" /> Pedidos
+          </Link>
           <a
             href="/"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-line bg-paper px-4 text-sm font-medium text-ink transition-colors hover:bg-bone"

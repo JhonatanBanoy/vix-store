@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react";
 const MESSAGES = [
   "Nuevos ingresos",
   "Compra ahora",
-  "Compra directa por WhatsApp",
+  "Compra fácil y segura",
   "Selección Vix",
 ];
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Truck, MessageCircle, RotateCcw, ArrowLeft } from "lucide-react";
+import { Truck, ShieldCheck, RotateCcw, ArrowLeft } from "lucide-react";
 
 import Container from "../../../components/layout/Container";
 import Badge from "../../../components/ui/Badge";
@@ -147,8 +147,8 @@ export default async function ProductDetailPage({ params }) {
               país
             </li>
             <li className="flex items-center gap-3 text-muted">
-              <MessageCircle className="h-4 w-4 shrink-0 text-brand" /> Compra
-              asistida por WhatsApp
+              <ShieldCheck className="h-4 w-4 shrink-0 text-brand" /> Pago
+              seguro y compra como invitado
             </li>
             <li className="flex items-center gap-3 text-muted">
               <RotateCcw className="h-4 w-4 shrink-0 text-brand" /> Devoluciones

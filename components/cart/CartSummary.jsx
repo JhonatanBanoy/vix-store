@@ -25,12 +25,12 @@ export default function CartSummary() {
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-muted">Envío</dt>
-            <dd className="text-muted">Por calcular</dd>
+            <dd className="text-muted">Según tu ciudad</dd>
           </div>
         </dl>
 
         <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
-          <span className="text-base font-bold">Total</span>
+          <span className="text-base font-bold">Total productos</span>
           <span className="text-xl font-bold">{formatPrice(subtotal)}</span>
         </div>
 
@@ -49,7 +49,8 @@ export default function CartSummary() {
         </Link>
 
         <p className="mt-4 text-xs leading-relaxed text-muted">
-          El costo de envío se confirma por WhatsApp según tu ciudad.
+          El costo de envío se calcula en el checkout según tu ciudad. Compra
+          como invitado, sin crear cuenta.
         </p>
       </div>
     </aside>

@@ -9,12 +9,12 @@ import { cn } from "../../lib/utils";
 
 const BENEFITS = [
   {
-    text: "Envío gratis a todo el país.",
+    text: "Envío a todo el país con seguimiento.",
     href: "/products",
     cta: "Ver productos",
   },
   {
-    text: "Atención personalizada por WhatsApp.",
+    text: "Asesoría y seguimiento por WhatsApp.",
     href: "/contact",
     cta: "Contáctanos",
   },
@@ -24,7 +24,7 @@ const BENEFITS = [
     cta: "Ver novedades",
   },
   {
-    text: "Elige tu favorito y escríbenos.",
+    text: "Elige tu favorito y compra fácil.",
     href: "/products",
     cta: "Ver productos",
   },
