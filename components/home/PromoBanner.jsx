@@ -17,10 +17,10 @@ export default function PromoBanner() {
               Ofertas de la semana
             </p>
             <h2 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl">
-              Hasta 30% de descuento en tecnología
+              Precios especiales en productos seleccionados
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-white/70 sm:text-base">
-              Audífonos, accesorios y más. Aprovecha antes de que se agoten.
+              Aprovecha descuentos por tiempo limitado antes de que se agoten.
             </p>
 
             <Link href="/products?offers=1" className="mt-7 inline-block">

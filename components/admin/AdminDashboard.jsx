@@ -23,6 +23,7 @@ import Toast from "../ui/Toast";
 import ProductModal from "./ProductModal";
 import { api } from "../../lib/api";
 import { cn, formatPrice } from "../../lib/utils";
+import { categoryLabel } from "../../lib/categories";
 
 const PAGE_SIZE = 8;
 
@@ -461,6 +462,11 @@ export default function AdminDashboard() {
                               <p className="mt-0.5 max-w-[260px] truncate text-xs text-muted">
                                 {product.description}
                               </p>
+                              {categoryLabel(product.category) && (
+                                <span className="mt-1 inline-flex rounded-md bg-bone px-1.5 py-0.5 text-[10px] font-medium text-muted">
+                                  {categoryLabel(product.category)}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </td>
@@ -545,6 +551,11 @@ export default function AdminDashboard() {
                         <p className="mt-0.5 line-clamp-1 text-xs text-muted">
                           {product.description}
                         </p>
+                        {categoryLabel(product.category) && (
+                          <span className="mt-1 inline-flex rounded-md bg-bone px-1.5 py-0.5 text-[10px] font-medium text-muted">
+                            {categoryLabel(product.category)}
+                          </span>
+                        )}
                         <div className="mt-1 flex items-center gap-2">
                           <span className="text-sm font-semibold">
                             {formatPrice(product.price)}

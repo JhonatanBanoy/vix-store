@@ -6,11 +6,14 @@ import { X, ImageIcon } from "lucide-react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { cn } from "../../lib/utils";
+import { CATEGORIES } from "../../lib/categories";
 
 const EMPTY = {
   name: "",
   price: "",
+  compareAtPrice: "",
   stock: "",
+  category: "",
   image: "",
   description: "",
   isActive: true,
@@ -29,7 +32,9 @@ export default function ProductModal({ open, product, onClose, onSave, saving })
       setForm({
         name: product.name || "",
         price: product.price ?? "",
+        compareAtPrice: product.compareAtPrice ?? "",
         stock: product.stock ?? "",
+        category: product.category || "",
         image: product.image || "",
         description: product.description || "",
         isActive: product.isActive !== false,
@@ -79,6 +84,14 @@ export default function ProductModal({ open, product, onClose, onSave, saving })
     if (form.stock === "" || Number.isNaN(stock) || stock < 0)
       next.stock = "El stock no puede ser negativo";
 
+    if (form.compareAtPrice !== "") {
+      const previous = Number(form.compareAtPrice);
+      if (Number.isNaN(previous) || previous <= 0)
+        next.compareAtPrice = "Ingresa un precio anterior válido";
+      else if (!Number.isNaN(price) && previous <= price)
+        next.compareAtPrice = "Debe ser mayor al precio actual";
+    }
+
     if (!form.image.trim()) next.image = "La imagen es obligatoria";
     else if (!/^(\/|https?:\/\/)/i.test(form.image.trim()))
       next.image = "Usa una ruta (/img/foto.jpg) o una URL que empiece por http";
@@ -96,7 +109,10 @@ export default function ProductModal({ open, product, onClose, onSave, saving })
     onSave({
       name: form.name.trim(),
       price: Number(form.price),
+      compareAtPrice:
+        form.compareAtPrice === "" ? null : Number(form.compareAtPrice),
       stock: Number(form.stock),
+      category: form.category,
       image: form.image.trim(),
       description: form.description.trim(),
       isActive: form.isActive,
@@ -152,6 +168,46 @@ export default function ProductModal({ open, product, onClose, onSave, saving })
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
+                <label htmlFor="p-category" className="text-sm font-medium">
+                  Categoría
+                </label>
+                <select
+                  id="p-category"
+                  value={form.category}
+                  onChange={(e) => update("category", e.target.value)}
+                  className="mt-1.5 h-11 w-full rounded-xl border border-line bg-paper px-4 text-sm text-ink transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+                >
+                  <option value="">Sin categoría</option>
+                  {CATEGORIES.map((category) => (
+                    <option key={category.slug} value={category.slug}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="p-stock" className="text-sm font-medium">
+                  Stock
+                </label>
+                <Input
+                  id="p-stock"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={form.stock}
+                  onChange={(e) => update("stock", e.target.value)}
+                  placeholder="10"
+                  className="mt-1.5"
+                />
+                {errors.stock && (
+                  <p className="mt-1 text-xs text-danger">{errors.stock}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
                 <label htmlFor="p-price" className="text-sm font-medium">
                   Precio
                 </label>
@@ -171,21 +227,30 @@ export default function ProductModal({ open, product, onClose, onSave, saving })
               </div>
 
               <div>
-                <label htmlFor="p-stock" className="text-sm font-medium">
-                  Stock
+                <label htmlFor="p-compareAtPrice" className="text-sm font-medium">
+                  Precio anterior{" "}
+                  <span className="text-xs font-normal text-muted">
+                    (opcional)
+                  </span>
                 </label>
                 <Input
-                  id="p-stock"
+                  id="p-compareAtPrice"
                   type="number"
                   min="0"
                   step="1"
-                  value={form.stock}
-                  onChange={(e) => update("stock", e.target.value)}
-                  placeholder="10"
+                  value={form.compareAtPrice}
+                  onChange={(e) => update("compareAtPrice", e.target.value)}
+                  placeholder="159900"
                   className="mt-1.5"
                 />
-                {errors.stock && (
-                  <p className="mt-1 text-xs text-danger">{errors.stock}</p>
+                {errors.compareAtPrice ? (
+                  <p className="mt-1 text-xs text-danger">
+                    {errors.compareAtPrice}
+                  </p>
+                ) : (
+                  <p className="mt-1 text-xs text-muted">
+                    Déjalo vacío si no está en oferta.
+                  </p>
                 )}
               </div>
             </div>

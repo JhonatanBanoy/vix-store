@@ -12,7 +12,7 @@ import {
 import ProductImage from "../ui/ProductImage";
 import { cn, formatPrice } from "../../lib/utils";
 
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 3500;
 
 export default function HeroCarousel({ products = [] }) {
   const slides = useMemo(() => {
@@ -29,31 +29,18 @@ export default function HeroCarousel({ products = [] }) {
   }, [products]);
 
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
   const touchStartX = useRef(null);
 
-  // Respeta la preferencia de movimiento reducido.
+  // Avanza automáticamente cada 3,5 s, sin pausas por hover.
   useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(query.matches);
-
-    const onChange = (event) => setReducedMotion(event.matches);
-    query.addEventListener("change", onChange);
-
-    return () => query.removeEventListener("change", onChange);
-  }, []);
-
-  // Autoplay con pausa al interactuar.
-  useEffect(() => {
-    if (paused || reducedMotion || slides.length < 2) return;
+    if (slides.length < 2) return;
 
     const timer = setTimeout(() => {
       setActive((current) => (current + 1) % slides.length);
     }, AUTOPLAY_MS);
 
     return () => clearTimeout(timer);
-  }, [active, paused, reducedMotion, slides.length]);
+  }, [active, slides.length]);
 
   const goTo = (index) => {
     setActive((index + slides.length) % slides.length);
@@ -74,13 +61,7 @@ export default function HeroCarousel({ products = [] }) {
   };
 
   return (
-    <div
-      className="relative mx-auto w-full max-w-md"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-    >
+    <div className="relative mx-auto w-full max-w-md">
       <div
         role="region"
         aria-roledescription="carrusel"
