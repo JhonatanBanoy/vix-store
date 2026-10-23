@@ -8,7 +8,7 @@ import { X, LogOut, User, LayoutDashboard } from "lucide-react";
 const links = [
   { label: "Inicio", href: "/" },
   { label: "Productos", href: "/products" },
-  { label: "Ofertas", href: "/products?filter=ofertas" },
+  { label: "Ofertas", href: "/products?offers=1" },
   { label: "Contacto", href: "/contact" },
   { label: "Carrito", href: "/cart" },
 ];

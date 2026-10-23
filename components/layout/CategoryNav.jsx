@@ -9,7 +9,7 @@ const categories = [
   { label: "Moda hombre", href: "/products?category=moda-hombre" },
   { label: "Moda mujer", href: "/products?category=moda-mujer" },
   { label: "Hogar", href: "/products?category=hogar" },
-  { label: "Ofertas", href: "/products?filter=ofertas" },
+  { label: "Ofertas", href: "/products?offers=1" },
 ];
 
 export default function CategoryNav() {

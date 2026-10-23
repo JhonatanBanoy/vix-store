@@ -15,10 +15,10 @@ export default function WhatsAppButton() {
     >
       <span
         aria-hidden="true"
-        className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#25D366] opacity-20 motion-reduce:animate-none"
+        className="pointer-events-none absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-20 motion-reduce:animate-none"
       />
 
-      <MessageCircle className="h-6 w-6" />
+      <MessageCircle className="relative h-6 w-6" />
 
       <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-lg bg-ink px-3 py-1.5 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100 sm:block">
         ¿Te ayudamos?

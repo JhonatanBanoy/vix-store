@@ -23,7 +23,7 @@ export default function PromoBanner() {
               Audífonos, accesorios y más. Aprovecha antes de que se agoten.
             </p>
 
-            <Link href="/products?filter=ofertas" className="mt-7 inline-block">
+            <Link href="/products?offers=1" className="mt-7 inline-block">
               <Button variant="deal" size="lg">
                 Ver ofertas <ArrowRight className="h-4 w-4" />
               </Button>
