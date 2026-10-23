@@ -6,6 +6,7 @@ import TopBar from "../components/layout/TopBar";
 import Header from "../components/layout/Header";
 import CategoryNav from "../components/layout/CategoryNav";
 import Footer from "../components/layout/Footer";
+import WhatsAppButton from "../components/layout/WhatsAppButton";
 
 // Estilos globales (Tailwind + tokens de Vix)
 import "./globals.css";
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
           <main className="flex-1">{children}</main>
 
           <Footer />
+          <WhatsAppButton />
         </CartProvider>
       </body>
     </html>

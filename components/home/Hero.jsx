@@ -4,8 +4,16 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import Container from "../layout/Container";
 import Button from "../ui/Button";
 import Badge from "../ui/Badge";
+import HeroCarousel from "./HeroCarousel";
+import { formatPrice } from "../../lib/utils";
 
-export default function Hero() {
+export default function Hero({ products = [] }) {
+  const active = products.filter((product) => product.isActive);
+  const prices = active
+    .map((product) => Number(product.price))
+    .filter((price) => price > 0);
+  const from = prices.length ? Math.min(...prices) : null;
+
   return (
     <section className="relative overflow-hidden bg-bone">
       <Container className="grid items-center gap-12 py-14 lg:grid-cols-2 lg:py-20">
@@ -31,7 +39,7 @@ export default function Hero() {
                 Ver productos <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/products?filter=ofertas">
+            <Link href="/products?offers=1">
               <Button variant="outline" size="lg">
                 Ver ofertas
               </Button>
@@ -49,7 +57,9 @@ export default function Hero() {
               <dt className="text-xs uppercase tracking-wide text-muted">
                 Productos
               </dt>
-              <dd className="mt-1 font-display text-xl font-bold">+500</dd>
+              <dd className="mt-1 font-display text-xl font-bold">
+                {active.length || "—"}
+              </dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-wide text-muted">
@@ -58,43 +68,19 @@ export default function Hero() {
               <dd className="mt-1 font-display text-xl font-bold">30 días</dd>
             </div>
           </dl>
+
+          {from && (
+            <p className="mt-4 text-sm text-muted">
+              Encuentra productos desde{" "}
+              <span className="font-semibold text-ink">
+                {formatPrice(from)}
+              </span>
+            </p>
+          )}
         </div>
 
         {/* Visual */}
-        <div className="relative mx-auto w-full max-w-md">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand via-brand to-ink">
-            <div
-              className="absolute inset-0 opacity-20"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-                backgroundSize: "22px 22px",
-              }}
-            />
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-              <span className="font-display text-6xl font-bold tracking-tight text-white sm:text-7xl">
-                V<span className="text-deal">I</span>X
-              </span>
-              <span className="text-[11px] uppercase tracking-[0.35em] text-white/70">
-                Nueva colección
-              </span>
-            </div>
-          </div>
-
-          <div className="absolute -left-3 top-10 rounded-xl border border-line bg-paper px-4 py-3 shadow-lg sm:-left-6">
-            <p className="text-[11px] uppercase tracking-wide text-muted">
-              Envío
-            </p>
-            <p className="text-sm font-semibold text-success">Gratis</p>
-          </div>
-
-          <div className="absolute -right-3 bottom-12 rounded-xl border border-line bg-paper px-4 py-3 shadow-lg sm:-right-6">
-            <p className="text-[11px] uppercase tracking-wide text-muted">
-              Desde
-            </p>
-            <p className="text-sm font-semibold">$ 49.900</p>
-          </div>
-        </div>
+        <HeroCarousel products={active} />
       </Container>
     </section>
   );

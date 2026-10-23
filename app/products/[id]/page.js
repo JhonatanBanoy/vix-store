@@ -8,6 +8,7 @@ import Breadcrumbs from "../../../components/catalog/Breadcrumbs";
 import ProductGallery from "../../../components/product/ProductGallery";
 import ProductBuyBox from "../../../components/product/ProductBuyBox";
 import ProductGrid from "../../../components/product/ProductGrid";
+import TrackRecentlyViewed from "../../../components/product/TrackRecentlyViewed";
 import { fetchProductById, fetchProducts } from "../../../lib/products";
 import { discountPercent } from "../../../lib/utils";
 
@@ -95,6 +96,8 @@ export default async function ProductDetailPage({ params }) {
 
   return (
     <Container className="py-8">
+      <TrackRecentlyViewed productId={product.id} />
+
       <Breadcrumbs
         items={[
           { label: "Inicio", href: "/" },
