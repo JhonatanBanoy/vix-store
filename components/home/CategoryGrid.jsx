@@ -53,21 +53,13 @@ export default function CategoryGrid() {
   return (
     <section className="py-12">
       <Container>
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-bold sm:text-3xl">
-              Explora por categoría
-            </h2>
-            <p className="mt-1 text-sm text-muted">
-              Encuentra rápido lo que necesitas.
-            </p>
-          </div>
-          <Link
-            href="/products"
-            className="hidden text-sm font-semibold text-brand hover:underline sm:block"
-          >
-            Ver todo
-          </Link>
+        <div>
+          <h2 className="text-2xl font-bold sm:text-3xl">
+            Explora por categoría
+          </h2>
+          <p className="mt-1 text-sm text-muted">
+            Encuentra rápido lo que necesitas.
+          </p>
         </div>
 
         <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6 sm:gap-4">
