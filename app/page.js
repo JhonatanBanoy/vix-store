@@ -48,6 +48,7 @@ export default async function HomePage() {
               title="Destacados"
               eyebrow="Selección Vix"
               description="Una selección pensada para ti."
+              compact
             />
           ) : (
             <>
@@ -84,7 +85,11 @@ export default async function HomePage() {
             </div>
 
             <div className="mt-6">
-              <ProductGrid products={newArrivals} className="sm:grid-cols-2 lg:grid-cols-4" />
+              <ProductGrid
+                products={newArrivals}
+                className="sm:grid-cols-2 lg:grid-cols-4"
+                compact
+              />
             </div>
           </Container>
         </section>

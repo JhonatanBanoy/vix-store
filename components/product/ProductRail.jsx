@@ -19,6 +19,7 @@ export default function ProductRail({
   eyebrow,
   href = "/products",
   linkLabel = "Ver todos",
+  compact = false,
 }) {
   const headingId = useId();
   const scrollerRef = useRef(null);
@@ -112,7 +113,7 @@ export default function ProductRail({
               data-rail-item
               className="w-[78vw] max-w-[320px] shrink-0 snap-start sm:w-[46%] sm:max-w-none lg:w-[calc((100%_-_3rem)/4)]"
             >
-              <ProductCard product={product} />
+              <ProductCard product={product} compact={compact} />
             </div>
           ))}
         </div>

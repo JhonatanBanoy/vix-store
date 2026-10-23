@@ -9,7 +9,7 @@ import { categoryLabel } from "../../lib/categories";
 import Badge from "../ui/Badge";
 import ProductImage from "../ui/ProductImage";
 
-export default function ProductCard({ product, className }) {
+export default function ProductCard({ product, className, compact = false }) {
   const { addToCart } = useCart();
 
   const outOfStock = product.stock <= 0;
@@ -26,7 +26,10 @@ export default function ProductCard({ product, className }) {
     >
       <Link
         href={href}
-        className="relative block aspect-square overflow-hidden bg-bone"
+        className={cn(
+          "relative block overflow-hidden bg-bone",
+          compact ? "aspect-[5/4]" : "aspect-square"
+        )}
       >
         <ProductImage
           src={product.image}
