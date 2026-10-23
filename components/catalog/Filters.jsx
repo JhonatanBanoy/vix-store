@@ -3,6 +3,8 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
 
+import { CATEGORIES } from "../../lib/categories";
+
 export default function Filters({ onDone }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -29,6 +31,7 @@ export default function Filters({ onDone }) {
   };
 
   const hasFilters =
+    searchParams.has("category") ||
     searchParams.has("min") ||
     searchParams.has("max") ||
     searchParams.get("available") === "1" ||
@@ -36,6 +39,42 @@ export default function Filters({ onDone }) {
 
   return (
     <div className="space-y-7">
+      {/* Categoría */}
+      <section>
+        <h3 className="text-sm font-semibold">Categoría</h3>
+        <div className="mt-3 space-y-2">
+          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted">
+            <input
+              type="radio"
+              name="category"
+              checked={!searchParams.get("category")}
+              onChange={() => apply((params) => params.delete("category"))}
+              className="h-4 w-4 accent-[#5B3DF5]"
+            />
+            Todas
+          </label>
+
+          {CATEGORIES.map((category) => (
+            <label
+              key={category.slug}
+              className="flex cursor-pointer items-center gap-2.5 text-sm text-muted"
+            >
+              <input
+                type="radio"
+                name="category"
+                checked={
+                  searchParams.get("category") === category.slug
+                }
+                onChange={() =>
+                  apply((params) => params.set("category", category.slug))
+                }
+                className="h-4 w-4 accent-[#5B3DF5]"
+              />
+              {category.label}
+            </label>
+          ))}
+        </div>
+      </section>
       {/* Disponibilidad */}
       <section>
         <h3 className="text-sm font-semibold">Disponibilidad</h3>
