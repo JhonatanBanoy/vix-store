@@ -4,7 +4,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import { CartProvider } from "../context/CartContext";
 import TopBar from "../components/layout/TopBar";
 import Header from "../components/layout/Header";
-import CategoryNav from "../components/layout/CategoryNav";
+import PromoMarquee from "../components/layout/PromoMarquee";
 import Footer from "../components/layout/Footer";
 import WhatsAppButton from "../components/layout/WhatsAppButton";
 import CornerNotice from "../components/layout/CornerNotice";
@@ -46,7 +46,7 @@ export default async function RootLayout({ children }) {
         <CartProvider>
           <TopBar />
           <Header />
-          <CategoryNav />
+          <PromoMarquee />
 
           <main className="flex-1">{children}</main>
 

@@ -91,3 +91,69 @@
     opacity: 1;
   }
 }
+
+/* ============================================================
+   Marquesina promocional
+   ============================================================ */
+@keyframes vix-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.vix-marquee-track {
+  animation: vix-marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.vix-marquee:hover .vix-marquee-track,
+.vix-marquee:focus-visible .vix-marquee-track {
+  animation-play-state: paused;
+}
+
+.vix-marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 40px,
+    #000 calc(100% - 40px),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 40px,
+    #000 calc(100% - 40px),
+    transparent
+  );
+}
+
+.vix-marquee-glow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(91, 61, 245, 0.24),
+    transparent 65%
+  );
+}
+
+.vix-marquee-static {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vix-marquee-track {
+    display: none;
+  }
+
+  .vix-marquee-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .vix-marquee-static {
+    display: flex;
+  }
+}
