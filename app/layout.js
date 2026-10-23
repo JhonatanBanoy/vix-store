@@ -8,6 +8,7 @@ import CategoryNav from "../components/layout/CategoryNav";
 import Footer from "../components/layout/Footer";
 import WhatsAppButton from "../components/layout/WhatsAppButton";
 import CornerNotice from "../components/layout/CornerNotice";
+import { getNoticeProducts } from "../lib/notice-products";
 
 // Estilos globales (Tailwind + tokens de Vix)
 import "./globals.css";
@@ -36,7 +37,9 @@ export const metadata = {
     "Vix: tecnología, moda y estilo de vida. Productos seleccionados con envío seguro.",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const noticeProducts = await getNoticeProducts();
+
   return (
     <html lang="es" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="flex min-h-screen flex-col bg-paper text-ink">
@@ -49,7 +52,7 @@ export default function RootLayout({ children }) {
 
           <Footer />
           <WhatsAppButton />
-          <CornerNotice />
+          <CornerNotice products={noticeProducts} />
         </CartProvider>
       </body>
     </html>

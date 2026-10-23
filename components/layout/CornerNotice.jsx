@@ -1,17 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Sparkles, X } from "lucide-react";
 
 import { cn } from "../../lib/utils";
 
-const MESSAGES = [
-  "Envío gratis a todo el país.",
-  "Atención personalizada por WhatsApp.",
-  "Descubre lo nuevo de Vix.",
-  "Elige tu favorito y escríbenos.",
+const BENEFITS = [
+  {
+    text: "Envío gratis a todo el país.",
+    href: "/products",
+    cta: "Ver productos",
+  },
+  {
+    text: "Atención personalizada por WhatsApp.",
+    href: "/contact",
+    cta: "Contáctanos",
+  },
+  {
+    text: "Descubre lo nuevo de Vix.",
+    href: "/products",
+    cta: "Ver novedades",
+  },
+  {
+    text: "Elige tu favorito y escríbenos.",
+    href: "/products",
+    cta: "Ver productos",
+  },
 ];
 
 const HIDDEN_ROUTES = [
@@ -23,7 +39,7 @@ const HIDDEN_ROUTES = [
   "/profile",
 ];
 
-export default function CornerNotice() {
+export default function CornerNotice({ products = [] }) {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [minimized, setMinimized] = useState(false);
@@ -32,6 +48,44 @@ export default function CornerNotice() {
   const [messageIndex, setMessageIndex] = useState(0);
   const [typed, setTyped] = useState("");
   const [deleting, setDeleting] = useState(false);
+
+  const messages = useMemo(() => {
+    const featured = (Array.isArray(products) ? products : [])
+      .filter((product) => product?.id && product?.name)
+      .slice(0, 2)
+      .map((product) => {
+        const name =
+          product.name.length > 30
+            ? `${product.name.slice(0, 30)}…`
+            : product.name;
+
+        return {
+          text: `Nuevo ingreso: ${name}.`,
+          href: `/products/${product.id}`,
+          cta: "Ver producto",
+        };
+      });
+
+    if (!featured.length) return BENEFITS;
+
+    // Alterna producto → beneficio → producto → beneficio.
+    const mixed = [];
+    for (let index = 0; index < featured.length; index += 1) {
+      mixed.push(featured[index]);
+      if (BENEFITS[index]) mixed.push(BENEFITS[index]);
+    }
+
+    return mixed;
+  }, [products]);
+
+  // Si la lista cambia de tamaño, vuelve al primer mensaje.
+  useEffect(() => {
+    if (messageIndex >= messages.length) {
+      setMessageIndex(0);
+      setTyped("");
+      setDeleting(false);
+    }
+  }, [messageIndex, messages.length]);
 
   const hidden = HIDDEN_ROUTES.some((route) => pathname?.startsWith(route));
 
@@ -77,7 +131,8 @@ export default function CornerNotice() {
   useEffect(() => {
     if (reducedMotion || !visible || minimized || dismissed) return;
 
-    const full = MESSAGES[messageIndex];
+    const full = messages[messageIndex]?.text || "";
+    if (!full) return;
 
     if (!deleting) {
       if (typed.length < full.length) {
@@ -102,23 +157,32 @@ export default function CornerNotice() {
 
     const timer = setTimeout(() => {
       setDeleting(false);
-      setMessageIndex((index) => (index + 1) % MESSAGES.length);
+      setMessageIndex((index) => (index + 1) % messages.length);
       setTyped("");
     }, 180);
 
     return () => clearTimeout(timer);
-  }, [typed, deleting, messageIndex, reducedMotion, visible, minimized, dismissed]);
+  }, [
+    typed,
+    deleting,
+    messageIndex,
+    reducedMotion,
+    visible,
+    minimized,
+    dismissed,
+    messages,
+  ]);
 
   // Con movimiento reducido se muestra el texto completo y rota sin teclear.
   useEffect(() => {
     if (!reducedMotion || !visible || minimized || dismissed) return;
 
     const timer = setInterval(() => {
-      setMessageIndex((index) => (index + 1) % MESSAGES.length);
+      setMessageIndex((index) => (index + 1) % messages.length);
     }, 4500);
 
     return () => clearInterval(timer);
-  }, [reducedMotion, visible, minimized, dismissed]);
+  }, [reducedMotion, visible, minimized, dismissed, messages]);
 
   const dismiss = () => {
     setDismissed(true);
@@ -139,7 +203,8 @@ export default function CornerNotice() {
 
   if (hidden || dismissed) return null;
 
-  const displayed = reducedMotion ? MESSAGES[messageIndex] : typed;
+  const current = messages[messageIndex] || messages[0];
+  const displayed = reducedMotion ? current.text : typed;
 
   return (
     <>
@@ -160,7 +225,7 @@ export default function CornerNotice() {
 
           <div className="relative flex items-start gap-3">
             <p className="sr-only" aria-live="polite">
-              {MESSAGES[messageIndex]}
+              {current.text}
             </p>
 
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand text-white shadow-lg shadow-brand/30">
@@ -198,17 +263,17 @@ export default function CornerNotice() {
 
               <div className="mt-3 flex items-center justify-between gap-3">
                 <Link
-                  href="/products"
+                  href={current.href}
                   className="group inline-flex items-center gap-1 text-xs font-semibold text-brand-light transition-colors hover:text-white"
                 >
-                  Ver productos
+                  {current.cta}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
 
                 <div className="flex items-center gap-1.5">
-                  {MESSAGES.map((message, index) => (
+                  {messages.map((message, index) => (
                     <button
-                      key={message}
+                      key={`${message.text}-${index}`}
                       type="button"
                       onClick={() => goToMessage(index)}
                       aria-label={`Ver mensaje ${index + 1}`}
