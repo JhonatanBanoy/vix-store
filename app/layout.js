@@ -7,6 +7,7 @@ import Header from "../components/layout/Header";
 import CategoryNav from "../components/layout/CategoryNav";
 import Footer from "../components/layout/Footer";
 import WhatsAppButton from "../components/layout/WhatsAppButton";
+import CornerNotice from "../components/layout/CornerNotice";
 
 // Estilos globales (Tailwind + tokens de Vix)
 import "./globals.css";
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
 
           <Footer />
           <WhatsAppButton />
+          <CornerNotice />
         </CartProvider>
       </body>
     </html>

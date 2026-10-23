@@ -66,3 +66,28 @@
     color: #ffffff;
   }
 }
+
+/* ============================================================
+   Aviso de esquina — cursor de escritura
+   ============================================================ */
+@keyframes vix-caret {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-caret {
+  animation: vix-caret 1s steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-caret {
+    animation: none;
+    opacity: 1;
+  }
+}

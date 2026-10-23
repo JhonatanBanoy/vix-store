@@ -5,6 +5,7 @@ import { ShoppingBag } from "lucide-react";
 
 import { useCart } from "../../context/CartContext";
 import { cn, formatPrice, discountPercent } from "../../lib/utils";
+import { categoryLabel } from "../../lib/categories";
 import Badge from "../ui/Badge";
 import ProductImage from "../ui/ProductImage";
 
@@ -13,12 +14,13 @@ export default function ProductCard({ product, className }) {
 
   const outOfStock = product.stock <= 0;
   const discount = discountPercent(product.compareAtPrice, product.price);
+  const category = categoryLabel(product.category);
   const href = `/products/${product.id}`;
 
   return (
     <div
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-card border border-line bg-paper transition-shadow duration-200 hover:shadow-lg",
+        "group relative flex flex-col overflow-hidden rounded-card border border-line bg-paper transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/10 hover:shadow-xl",
         className
       )}
     >
@@ -37,6 +39,12 @@ export default function ProductCard({ product, className }) {
           {discount > 0 && <Badge variant="sale">-{discount}%</Badge>}
           {outOfStock && <Badge variant="danger">Agotado</Badge>}
         </div>
+
+        {category && (
+          <span className="absolute right-3 top-3 max-w-[60%] truncate rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-ink shadow-sm backdrop-blur">
+            {category}
+          </span>
+        )}
 
         {!outOfStock && (
           <button

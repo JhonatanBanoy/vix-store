@@ -9,6 +9,7 @@ import PromoBanner from "../components/home/PromoBanner";
 import EmptyState from "../components/home/EmptyState";
 import RecentlyViewed from "../components/home/RecentlyViewed";
 import ProductGrid from "../components/product/ProductGrid";
+import ProductRail from "../components/product/ProductRail";
 import { fetchProducts } from "../lib/products";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +23,8 @@ export const metadata = {
 export default async function HomePage() {
   const products = await fetchProducts();
   const active = products.filter((product) => product.isActive);
-  const featured = active.slice(0, 4);
+  // El riel muestra 4 a la vez; se envían 8 para que tenga recorrido.
+  const featured = active.slice(0, 8);
 
   const featuredIds = new Set(featured.map((product) => product.id));
   const newArrivals = [...active]
@@ -40,28 +42,21 @@ export default async function HomePage() {
 
       <section className="pb-4">
         <Container>
-          <div className="flex items-end justify-between gap-4">
-            <div>
+          {featured.length ? (
+            <ProductRail
+              products={featured}
+              title="Destacados"
+              eyebrow="Selección Vix"
+              description="Una selección pensada para ti."
+            />
+          ) : (
+            <>
               <h2 className="text-2xl font-bold sm:text-3xl">Destacados</h2>
-              <p className="mt-1 text-sm text-muted">
-                Una selección de lo más visto de la semana.
-              </p>
-            </div>
-            <Link
-              href="/products"
-              className="flex shrink-0 items-center gap-1 text-sm font-semibold text-brand hover:underline"
-            >
-              Ver todos <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="mt-6">
-            {featured.length ? (
-              <ProductGrid products={featured} className="sm:grid-cols-2 lg:grid-cols-4" />
-            ) : (
-              <EmptyState />
-            )}
-          </div>
+              <div className="mt-6">
+                <EmptyState />
+              </div>
+            </>
+          )}
         </Container>
       </section>
 
@@ -70,7 +65,10 @@ export default async function HomePage() {
           <Container>
             <div className="flex items-end justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold sm:text-3xl">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand">
+                  Lo último
+                </p>
+                <h2 className="mt-1 text-2xl font-bold sm:text-3xl">
                   Nuevos ingresos
                 </h2>
                 <p className="mt-1 text-sm text-muted">
